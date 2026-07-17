@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой Первый Сайт</title>
+    
+    <!-- 🎨 ТУТ ЖИВЕТ CSS (ВНЕШНИЙ ВИД ТВОЕГО САЙТА) -->
+    <style>
+        /* Переменные для быстрой смены цветов */
+        :root {
+            --bg-color: #1e1e24;
+            --text-color: #ffffff;
+            --accent-color: #ff4757;
+            --card-bg: #2a2a35;
+        }
+
+        /* Стиль для светлой темы, который включится через JavaScript */
+        .light-theme {
+            --bg-color: #f1f2f6;
+            --text-color: #2f3542;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background 0.3s, color 0.3s; /* Плавное переключение */
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        /* Стилизация кнопки */
+        .btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.1s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05); /* Легкое увеличение при наведении */
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 🏗️ ТУТ ЖИВЕТ HTML (СТРУКТУРА И ЭЛЕМЕНТЫ) -->
+    <div class="container">
+        <div class="card">
+            <h1>Привет! Это мой сайт</h1>
+            <p>Я запустил его на GitHub Pages. Сейчас проверим, как работают функции.</p>
+            
+            <!-- Кнопка, на которую мы повесим функцию -->
+            <button class="btn" id="theme-toggle">Сменить тему</button>
+        </div>
+    </div>
+
+    <!-- ⚙️ ТУТ ЖИВЕТ JAVASCRIPT (ФУНКЦИИ И ИНТЕРАКТИВ) -->
+    <script>
+        // Находим нашу кнопку в HTML по её ID
+        const themeBtn = document.getElementById('theme-toggle');
+
+        // Вешаем на кнопку "слушатель клика"
+        themeBtn.addEventListener('click', () => {
+            // Тогглим (включаем/выключаем) класс светлой темы у всего тела страницы
+            document.body.classList.toggle('light-theme');
+            
+            // Небольшая логика: меняем текст на кнопке в зависимости от темы
+            if (document.body.classList.contains('light-theme')) {
+                themeBtn.textContent = 'Включить темную тему';
+            } else {
+                themeBtn.textContent = 'Сменить тему';
+            }
+        });
+    </script>
+
+</body>
+</html>

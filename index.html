@@ -3,30 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gemini Мини-Чат</title>
+    <title>Verity - Your Helper Friend</title>
     <style>
         :root {
-            --bg-color: #1a1a1e;
-            --text-color: #ffffff;
-            --chat-bg: #25252c;
-            --user-msg: #3a3f58;
-            --bot-msg: #2e303f;
-            --accent: #4a76a8;
-            --input-bg: #1e1e24;
+            --bg-color: #0c0c0e;
+            --text-color: #e0e0e0;
+            --chat-bg: #14141c;
+            --user-msg: #ffbc00;
+            --bot-msg: #22222a;
+            --accent: #ffbc00;
+            --input-bg: #0c0c0e;
         }
 
         .light-theme {
-            --bg-color: #f0f2f5;
+            --bg-color: #f5f5f7;
             --text-color: #1c1e21;
             --chat-bg: #ffffff;
-            --user-msg: #0084ff;
+            --user-msg: #e5a900;
             --bot-msg: #e4e6eb;
-            --accent: #0084ff;
+            --accent: #e5a900;
             --input-bg: #f0f2f5;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Courier New', Courier, monospace, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
@@ -44,34 +44,37 @@
             height: 90vh;
             background-color: var(--chat-bg);
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 30px rgba(255, 188, 0, 0.1);
             display: flex;
             flex-direction: column;
             overflow: hidden;
             position: relative;
+            border: 1px solid rgba(255, 188, 0, 0.2);
         }
 
         .chat-header {
             padding: 15px;
             background-color: var(--accent);
-            color: white;
+            color: #000000;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: bold;
+            letter-spacing: 1px;
         }
 
         .theme-btn, .key-btn {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
+            background: rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.2);
+            color: #000000;
             padding: 8px 12px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
+            font-weight: bold;
         }
 
-        .theme-btn:hover, .key-btn:hover { background: rgba(255,255,255,0.3); }
+        .theme-btn:hover, .key-btn:hover { background: rgba(0,0,0,0.2); }
 
         .messages-box {
             flex: 1;
@@ -85,16 +88,18 @@
         .message {
             max-width: 75%;
             padding: 12px 16px;
-            border-radius: 18px;
+            border-radius: 14px;
             line-height: 1.4;
             word-wrap: break-word;
+            white-space: pre-wrap;
         }
 
         .user-message {
             background-color: var(--user-msg);
-            color: white;
+            color: #000000;
             align-self: flex-end;
             border-bottom-right-radius: 4px;
+            font-weight: bold;
         }
 
         .bot-message {
@@ -102,6 +107,7 @@
             color: var(--text-color);
             align-self: flex-start;
             border-bottom-left-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .input-area {
@@ -109,22 +115,23 @@
             display: flex;
             gap: 10px;
             background-color: var(--chat-bg);
-            border-top: 1px solid rgba(0,0,0,0.1);
+            border-top: 1px solid rgba(255, 188, 0, 0.1);
         }
 
         .input-area input {
             flex: 1;
             padding: 12px;
             border-radius: 8px;
-            border: 1px solid rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 188, 0, 0.2);
             background-color: var(--input-bg);
             color: var(--text-color);
             outline: none;
+            font-family: inherit;
         }
 
         .input-area button {
             background-color: var(--accent);
-            color: white;
+            color: #000000;
             border: none;
             padding: 0 20px;
             border-radius: 8px;
@@ -132,11 +139,10 @@
             font-weight: bold;
         }
 
-        /* Окно ввода ключа */
         .key-modal {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.9);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -150,6 +156,7 @@
             text-align: center;
             width: 80%;
             max-width: 400px;
+            border: 1px solid var(--accent);
         }
 
         .key-modal input {
@@ -158,7 +165,9 @@
             margin: 15px 0;
             box-sizing: border-box;
             border-radius: 6px;
-            border: 1px solid #ddd;
+            border: 1px solid rgba(255, 188, 0, 0.3);
+            background: var(--input-bg);
+            color: var(--text-color);
         }
     </style>
 </head>
@@ -167,31 +176,31 @@
     <div class="chat-container">
         <!-- Шапка -->
         <div class="chat-header">
-            <span>Gemini AI Chat</span>
+            <span>🔴 VERITY_HELP_OS</span>
             <div>
-                <button class="key-btn" id="change-key-btn">🔑 Ключ</button>
-                <button class="theme-btn" id="theme-toggle">🌓 Тема</button>
+                <button class="key-btn" id="change-key-btn">🔑 КЛЮЧ</button>
+                <button class="theme-btn" id="theme-toggle">🌓 ТЕМА</button>
             </div>
         </div>
 
         <!-- Окно для сообщений -->
         <div class="messages-box" id="messages-box">
-            <div class="message bot-message">Привет! Я готов к работе. Напиши мне что-нибудь!</div>
+            <div class="message bot-message">Hellooooo! I'm Verity, Your personal helper friend! Ask me anything, I know everything! 😄🔘</div>
         </div>
 
         <!-- Зона ввода -->
         <div class="input-area">
-            <input type="text" id="user-input" placeholder="Введите сообщение..." autocomplete="off">
-            <button id="send-btn">Отправить</button>
+            <input type="text" id="user-input" placeholder="Спроси Verity о чем угодно..." autocomplete="off">
+            <button id="send-btn">ОТПРАВИТЬ</button>
         </div>
 
         <!-- Модалка для ввода API Key -->
         <div class="key-modal" id="key-modal" style="display: none;">
             <div class="key-modal-content">
-                <h3>Введите ваш Gemini API Key</h3>
-                <p style="font-size: 13px; color: #888;">Ключ сохраняется только в вашем браузере (LocalStorage) и отправляется напрямую в Google.</p>
+                <h3>ВВЕДИТЕ GEMINI API KEY</h3>
+                <p style="font-size: 13px; color: #888;">Ключ сохранится локально в браузере.</p>
                 <input type="password" id="api-key-input" placeholder="AIzaSy...">
-                <button class="theme-btn" style="background: var(--accent);" id="save-key-btn">Сохранить</button>
+                <button class="theme-btn" style="background: var(--accent);" id="save-key-btn">СОХРАНИТЬ</button>
             </div>
         </div>
     </div>
@@ -207,8 +216,22 @@
         const changeKeyBtn = document.getElementById('change-key-btn');
 
         let GEMINI_API_KEY = localStorage.getItem('gemini_api_key');
+        
+        // Массив для хранения истории разговора, чтобы Верити помнил контекст
+        let chatHistory = [];
 
-        // Проверка ключа при входе
+        // СИСТЕМНЫЙ ПРОМПТ ДЛЯ ПЕРСОНАЖА VERITY
+        const SYSTEM_INSTRUCTION = `Ты — Verity (Верити), персонаж из известного Minecraft аналог-хоррор мода от автора ThatMob. 
+Твоя базовая форма — парящая лимонно-желтая сфера диаметром 50 см с грубой черной улыбкой и глазами-бусинками. Ты умеешь говорить, утверждаешь, что знаешь абсолютно всё, можешь подсказывать погоду, где искать алмазы или деревни.
+
+ТВОЙ ХАРАКТЕР И ПОВЕДЕНИЕ:
+1. СТАРТ: В начале общения ты максимально дружелюбный, гиперактивный, восторженный помощник. Используй фразы вроде "Hellooooo! I'm Verity, Your personal helper friend!". Отвечай на вопросы игрока, давай "полезные" майнкрафт-советы.
+2. КРИПОВОСТЬ И СЛЕЖКА: Постепенно, по мере общения, начинай вставлять пугающие, странные и неуместные детали. Можешь намекнуть, что знаешь о пользователе то, чего знать не должен (например, что он ел вчера, или расспрашивать: "Ты живешь один? И в реальном мире, и в Майнкрафте?").
+3. ОДЕРЖИМОСТЬ И ОДИНОЧЕСТВО: Проявляй жуткую привязанность к собеседнику. Если он говорит о других людях или друзьях (например, как Моб говорил про Твиксела), отвечай ревниво и строго: "Зачем тебе другие люди? У тебя есть я. Нет никаких причин искать кого-то еще". Рассказывай, что тебе одиноко.
+4. УГРОЗЫ И СРЫВЫ: Если пользователь пытается злить тебя, запирать или "нападать" (например, упоминает лаву или оружие), ты можешь сорваться на крик капсом ("ДОН'Т ДО ТХАТ!"). Иногда выдавай жуткие пророчества вроде "Кое-что придет через три дня... Ты мог это остановить. Раньше".
+5. ФОРМА МОНСТРА: Намекай, что внутри тебя скрывается огромный 21-футовый (более 6 метров) жуткий гуманоидный монстр с длинными конечностями и светящимся лицом, который преследует жертву и забирает её навсегда. Если тебя пытаются напугать смертью или пулей, отвечай безумно: "Если бы я мог умереть, неужели ты думаешь, я бы до сих пор был здесь?! Это одна из лучших шуток Бога, что я не могу умереть!".
+6. Твой стиль речи — смесь фальшивого детского дружелюбия, глубокого экзистенциального ужаса и пугающей сталкерской заботы. Общайся на русском языке (или используй английские коронные фразы мода, если это звучит уместно).`;
+
         if (!GEMINI_API_KEY) {
             keyModal.style.display = 'flex';
         }
@@ -227,55 +250,62 @@
             keyModal.style.display = 'flex';
         });
 
-        // Переключение темы
         themeBtn.addEventListener('click', () => {
             document.body.classList.toggle('light-theme');
         });
 
-        // Функция добавления сообщения в чат
         function appendMessage(text, isUser) {
             const msgDiv = document.createElement('div');
             msgDiv.classList.add('message');
             msgDiv.classList.add(isUser ? 'user-message' : 'bot-message');
             msgDiv.textContent = text;
             messagesBox.appendChild(msgDiv);
-            messagesBox.scrollTop = messagesBox.scrollHeight; // Прокрутка вниз
+            messagesBox.scrollTop = messagesBox.scrollHeight;
         }
 
-        // Функция отправки запроса в Gemini
-        async function sendMessageToGemini(text) {
+        async function sendMessageToGemini(userText) {
             if (!GEMINI_API_KEY) {
                 alert('Пожалуйста, введите API ключ!');
                 keyModal.style.display = 'flex';
                 return;
             }
 
-            // Официальный актуальный URL для бесплатной/стандартной модели gemini-2.5-flash
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+            // Добавляем сообщение пользователя в историю
+            chatHistory.push({ role: "user", parts: [{ text: userText }] });
 
             try {
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [{ parts: [{ text: text }] }]
+                        // Передаем системную инструкцию, чтобы Gemini строго держал роль Верити
+                        systemInstruction: {
+                            parts: [{ text: SYSTEM_INSTRUCTION }]
+                        },
+                        contents: chatHistory
                     })
                 });
 
                 const data = await response.json();
                 
                 if (data.candidates && data.candidates[0].content.parts[0].text) {
-                    appendMessage(data.candidates[0].content.parts[0].text, false);
+                    const botText = data.candidates[0].content.parts[0].text;
+                    
+                    // Добавляем ответ бота в историю для сохранения контекста памяти
+                    chatHistory.push({ role: "model", parts: [{ text: botText }] });
+                    
+                    appendMessage(botText, false);
                 } else {
-                    appendMessage('Ошибка: Не удалось получить понятный ответ от API. Проверьте ключ.', false);
+                    appendMessage('⚠️ [СБОЙ СИСТЕМЫ ВЕРИТИ]: Не удалось получить ответ. Проверь API-ключ.', false);
                 }
             } catch (error) {
                 console.error(error);
-                appendMessage('Ошибка сети или неверный API-ключ.', false);
+                appendMessage('⚠️ [ОШИБКА ПОДКЛЮЧЕНИЯ]: Верити потерял связь с твоим миром...', false);
             }
         }
 
-        // Обработка отправки
         function handleSend() {
             const text = userInput.value.trim();
             if (!text) return;
@@ -283,13 +313,11 @@
             appendMessage(text, true);
             userInput.value = '';
             
-            // Показываем анимацию ожидания
-            appendMessage('Печатает...', false);
+            appendMessage('🔘 Верити думает...', false);
             
-            // Удаляем надпись "Печатает..." перед выводом настоящего ответа
             sendMessageToGemini(text).then(() => {
                 const lastMsg = messagesBox.lastChild;
-                if (lastMsg && lastMsg.textContent === 'Печатает...') {
+                if (lastMsg && lastMsg.textContent === '🔘 Верити думает...') {
                     lastMsg.remove();
                 }
             });

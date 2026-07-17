@@ -3,109 +3,300 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой Первый Сайт</title>
-    
-    <!-- 🎨 ТУТ ЖИВЕТ CSS (ВНЕШНИЙ ВИД ТВОЕГО САЙТА) -->
+    <title>Gemini Мини-Чат</title>
     <style>
-        /* Переменные для быстрой смены цветов */
         :root {
-            --bg-color: #1e1e24;
+            --bg-color: #1a1a1e;
             --text-color: #ffffff;
-            --accent-color: #ff4757;
-            --card-bg: #2a2a35;
+            --chat-bg: #25252c;
+            --user-msg: #3a3f58;
+            --bot-msg: #2e303f;
+            --accent: #4a76a8;
+            --input-bg: #1e1e24;
         }
 
-        /* Стиль для светлой темы, который включится через JavaScript */
         .light-theme {
-            --bg-color: #f1f2f6;
-            --text-color: #2f3542;
-            --card-bg: #ffffff;
+            --bg-color: #f0f2f5;
+            --text-color: #1c1e21;
+            --chat-bg: #ffffff;
+            --user-msg: #0084ff;
+            --bot-msg: #e4e6eb;
+            --accent: #0084ff;
+            --input-bg: #f0f2f5;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            height: 90vh;
+            background-color: var(--chat-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
             display: flex;
             flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .chat-header {
+            padding: 15px;
+            background-color: var(--accent);
+            color: white;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            transition: background 0.3s, color 0.3s; /* Плавное переключение */
+            font-weight: bold;
         }
 
-        .container {
-            max-width: 600px;
-            width: 100%;
-            text-align: center;
-            margin-top: 50px;
+        .theme-btn, .key-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
         }
 
-        .card {
-            background-color: var(--card-bg);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        .theme-btn:hover, .key-btn:hover { background: rgba(255,255,255,0.3); }
+
+        .messages-box {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        h1 {
-            color: var(--accent-color);
-            margin-bottom: 10px;
+        .message {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+            word-wrap: break-word;
         }
 
-        /* Стилизация кнопки */
-        .btn {
-            background-color: var(--accent-color);
+        .user-message {
+            background-color: var(--user-msg);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bot-message {
+            background-color: var(--bot-msg);
+            color: var(--text-color);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .input-area {
+            padding: 15px;
+            display: flex;
+            gap: 10px;
+            background-color: var(--chat-bg);
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .input-area input {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(0,0,0,0.1);
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            outline: none;
+        }
+
+        .input-area button {
+            background-color: var(--accent);
             color: white;
             border: none;
-            padding: 12px 24px;
-            font-size: 16px;
+            padding: 0 20px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            transition: transform 0.1s;
         }
 
-        .btn:hover {
-            transform: scale(1.05); /* Легкое увеличение при наведении */
+        /* Окно ввода ключа */
+        .key-modal {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
         }
 
-        .btn:active {
-            transform: scale(0.95);
+        .key-modal-content {
+            background: var(--chat-bg);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .key-modal input {
+            width: 100%;
+            padding: 10px;
+            margin: 15px 0;
+            box-sizing: border-box;
+            border-radius: 6px;
+            border: 1px solid #ddd;
         }
     </style>
 </head>
 <body>
 
-    <!-- 🏗️ ТУТ ЖИВЕТ HTML (СТРУКТУРА И ЭЛЕМЕНТЫ) -->
-    <div class="container">
-        <div class="card">
-            <h1>Привет! Это мой сайт</h1>
-            <p>Я запустил его на GitHub Pages. Сейчас проверим, как работают функции.</p>
-            
-            <!-- Кнопка, на которую мы повесим функцию -->
-            <button class="btn" id="theme-toggle">Сменить тему</button>
+    <div class="chat-container">
+        <!-- Шапка -->
+        <div class="chat-header">
+            <span>Gemini AI Chat</span>
+            <div>
+                <button class="key-btn" id="change-key-btn">🔑 Ключ</button>
+                <button class="theme-btn" id="theme-toggle">🌓 Тема</button>
+            </div>
+        </div>
+
+        <!-- Окно для сообщений -->
+        <div class="messages-box" id="messages-box">
+            <div class="message bot-message">Привет! Я готов к работе. Напиши мне что-нибудь!</div>
+        </div>
+
+        <!-- Зона ввода -->
+        <div class="input-area">
+            <input type="text" id="user-input" placeholder="Введите сообщение..." autocomplete="off">
+            <button id="send-btn">Отправить</button>
+        </div>
+
+        <!-- Модалка для ввода API Key -->
+        <div class="key-modal" id="key-modal" style="display: none;">
+            <div class="key-modal-content">
+                <h3>Введите ваш Gemini API Key</h3>
+                <p style="font-size: 13px; color: #888;">Ключ сохраняется только в вашем браузере (LocalStorage) и отправляется напрямую в Google.</p>
+                <input type="password" id="api-key-input" placeholder="AIzaSy...">
+                <button class="theme-btn" style="background: var(--accent);" id="save-key-btn">Сохранить</button>
+            </div>
         </div>
     </div>
 
-    <!-- ⚙️ ТУТ ЖИВЕТ JAVASCRIPT (ФУНКЦИИ И ИНТЕРАКТИВ) -->
     <script>
-        // Находим нашу кнопку в HTML по её ID
         const themeBtn = document.getElementById('theme-toggle');
+        const sendBtn = document.getElementById('send-btn');
+        const userInput = document.getElementById('user-input');
+        const messagesBox = document.getElementById('messages-box');
+        const keyModal = document.getElementById('key-modal');
+        const apiKeyInput = document.getElementById('api-key-input');
+        const saveKeyBtn = document.getElementById('save-key-btn');
+        const changeKeyBtn = document.getElementById('change-key-btn');
 
-        // Вешаем на кнопку "слушатель клика"
-        themeBtn.addEventListener('click', () => {
-            // Тогглим (включаем/выключаем) класс светлой темы у всего тела страницы
-            document.body.classList.toggle('light-theme');
-            
-            // Небольшая логика: меняем текст на кнопке в зависимости от темы
-            if (document.body.classList.contains('light-theme')) {
-                themeBtn.textContent = 'Включить темную тему';
-            } else {
-                themeBtn.textContent = 'Сменить тему';
+        let GEMINI_API_KEY = localStorage.getItem('gemini_api_key');
+
+        // Проверка ключа при входе
+        if (!GEMINI_API_KEY) {
+            keyModal.style.display = 'flex';
+        }
+
+        saveKeyBtn.addEventListener('click', () => {
+            const key = apiKeyInput.value.trim();
+            if (key) {
+                localStorage.setItem('gemini_api_key', key);
+                GEMINI_API_KEY = key;
+                keyModal.style.display = 'none';
             }
         });
-    </script>
 
+        changeKeyBtn.addEventListener('click', () => {
+            apiKeyInput.value = GEMINI_API_KEY || '';
+            keyModal.style.display = 'flex';
+        });
+
+        // Переключение темы
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+        });
+
+        // Функция добавления сообщения в чат
+        function appendMessage(text, isUser) {
+            const msgDiv = document.createElement('div');
+            msgDiv.classList.add('message');
+            msgDiv.classList.add(isUser ? 'user-message' : 'bot-message');
+            msgDiv.textContent = text;
+            messagesBox.appendChild(msgDiv);
+            messagesBox.scrollTop = messagesBox.scrollHeight; // Прокрутка вниз
+        }
+
+        // Функция отправки запроса в Gemini
+        async function sendMessageToGemini(text) {
+            if (!GEMINI_API_KEY) {
+                alert('Пожалуйста, введите API ключ!');
+                keyModal.style.display = 'flex';
+                return;
+            }
+
+            // Официальный актуальный URL для бесплатной/стандартной модели gemini-2.5-flash
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: text }] }]
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.candidates && data.candidates[0].content.parts[0].text) {
+                    appendMessage(data.candidates[0].content.parts[0].text, false);
+                } else {
+                    appendMessage('Ошибка: Не удалось получить понятный ответ от API. Проверьте ключ.', false);
+                }
+            } catch (error) {
+                console.error(error);
+                appendMessage('Ошибка сети или неверный API-ключ.', false);
+            }
+        }
+
+        // Обработка отправки
+        function handleSend() {
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            appendMessage(text, true);
+            userInput.value = '';
+            
+            // Показываем анимацию ожидания
+            appendMessage('Печатает...', false);
+            
+            // Удаляем надпись "Печатает..." перед выводом настоящего ответа
+            sendMessageToGemini(text).then(() => {
+                const lastMsg = messagesBox.lastChild;
+                if (lastMsg && lastMsg.textContent === 'Печатает...') {
+                    lastMsg.remove();
+                }
+            });
+        }
+
+        sendBtn.addEventListener('click', handleSend);
+        userInput.addEventListener('keypress', (e) => { e.key === 'Enter' && handleSend(); });
+    </script>
 </body>
 </html>
